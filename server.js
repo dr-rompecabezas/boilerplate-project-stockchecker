@@ -4,7 +4,6 @@ const express     = require('express');
 const helmet      = require("helmet");
 const mongoose    = require('mongoose')
 const cors        = require('cors');
-// const fetch       = require('node-fetch');
 
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -27,7 +26,7 @@ mongoose.connect(process.env.DB, {
 })
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 //Index page (static HTML)
 app.route('/')
