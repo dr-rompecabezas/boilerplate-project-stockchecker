@@ -80,6 +80,7 @@ module.exports = function (app) {
         const apiQuery1 = "https://stock-price-checker-proxy.freecodecamp.rocks/v1/stock/" + stocks[0] + "/quote"
         const apiQuery2 = "https://stock-price-checker-proxy.freecodecamp.rocks/v1/stock/" + stocks[1] + "/quote"
         const compareResponseObj = { "stockData": [] }
+        let stock1Likes, stock2Likes
         // GET first of two stocks requested
         fetch(apiQuery1)
           .then(res => res.json())
@@ -96,16 +97,18 @@ module.exports = function (app) {
                 StockModel.create({ stock: data.symbol, ip: ip, likes: 1 }, function (err, doc) {
                   if (err) { console.log(err) }
                   console.log("new doc1 with ip and likes created")
-                  responseObj1.rel_likes = doc.likes
-                  compareResponseObj.stockData.push(responseObj1)
+                  stock1Likes = doc.likes
+                  // responseObj1.rel_likes = doc.likes
+                  // compareResponseObj.stockData.push(responseObj1)
                 })
               } else if (!doc && !req.query.like) {
                 console.log("no doc1 found and no like requested")
                 StockModel.create({ stock: data.symbol, likes: 0 }, function (err, doc) {
                   if (err) { console.log(err) }
                   console.log("new doc1 with zero likes and empty ip array created")
-                  responseObj1.rel_likes = doc.likes
-                  compareResponseObj.stockData.push(responseObj1)
+                  stock1Likes = doc.likes
+                  // responseObj1.rel_likes = doc.likes
+                  // compareResponseObj.stockData.push(responseObj1)
                 })
               } else if (doc && req.query.like) {
                 console.log("doc1 found; like requested; checking if ip is in doc...")
@@ -116,24 +119,28 @@ module.exports = function (app) {
                   await doc.save(function (err, doc) {
                     if (err) { console.log(err) }
                     console.log("doc1 updated with new ip and new like")
-                    responseObj1.rel_likes = doc.likes
-                    compareResponseObj.stockData.push(responseObj1)
+                    stock1Likes = doc.likes
+                    // responseObj1.rel_likes = doc.likes
+                    // compareResponseObj.stockData.push(responseObj1)
                   })
                 } else {
                   console.log("doc1 already includes ip; responding with existing likes")
-                  responseObj1.rel_likes = doc.likes
-                  compareResponseObj.stockData.push(responseObj1)
+                  stock1Likes = doc.likes
+                  // responseObj1.rel_likes = doc.likes
+                  // compareResponseObj.stockData.push(responseObj1)
                 }
               } else if (doc && !req.query.like) {
                 console.log("doc1 found, no like requested")
-                responseObj1.rel_likes = doc.likes
-                compareResponseObj.stockData.push(responseObj1)
+                stock1Likes = doc.likes
+                // responseObj1.rel_likes = doc.likes
+                // compareResponseObj.stockData.push(responseObj1)
               } else {
                 console.log("Something went wrong! This code shouldn't run.")
               }
               console.log("responseObj1 at end of findOne callback: ", responseObj1)
+              compareResponseObj.stockData.push(responseObj1)
+              console.log("compareResponseObj after pushing responseObj1: ", compareResponseObj)
             })
-            console.log("responseObj1 at end of proxy data fetch callback: ", responseObj1)
           })
           .catch(err => {
             res.send(err)
@@ -154,18 +161,20 @@ module.exports = function (app) {
                 StockModel.create({ stock: data.symbol, ip: ip, likes: 1 }, function (err, doc) {
                   if (err) { console.log(err) }
                   console.log("new doc2 with ip and likes created")
-                  responseObj2.rel_likes = doc.likes
-                  compareResponseObj.stockData.push(responseObj2)
-                  res.send(compareResponseObj)
+                  stock2Likes = doc.likes
+                  // responseObj2.rel_likes = doc.likes
+                  // compareResponseObj.stockData.push(responseObj2)
+                  // res.send(compareResponseObj)
                 })
               } else if (!doc && !req.query.like) {
                 console.log("no doc2 found and no like requested")
                 StockModel.create({ stock: data.symbol, likes: 0 }, function (err, doc) {
                   if (err) { console.log(err) }
                   console.log("new doc2 with zero likes and empty ip array created")
-                  responseObj2.rel_likes = doc.likes
-                  compareResponseObj.stockData.push(responseObj2)
-                  res.send(compareResponseObj)
+                  stock2Likes = doc.likes
+                  // responseObj2.rel_likes = doc.likes
+                  // compareResponseObj.stockData.push(responseObj2)
+                  // res.send(compareResponseObj)
                 })
               } else if (doc && req.query.like) {
                 console.log("doc2 found; like requested; checking if ip is in doc...")
@@ -176,35 +185,41 @@ module.exports = function (app) {
                   await doc.save(function (err, doc) {
                     if (err) { console.log(err) }
                     console.log("doc2 updated with new ip and new like")
-                    responseObj2.rel_likes = doc.likes
-                    compareResponseObj.stockData.push(responseObj2)
-                    res.send(compareResponseObj)
+                    stock2Likes = doc.likes
+                    // responseObj2.rel_likes = doc.likes
+                    // compareResponseObj.stockData.push(responseObj2)
+                    // res.send(compareResponseObj)
                   })
                 } else {
                   console.log("doc2 already includes ip; responding with existing likes")
-                  responseObj2.rel_likes = doc.likes
-                  compareResponseObj.stockData.push(responseObj2)
-                  res.send(compareResponseObj)
+                  stock2Likes = doc.likes
+                  // responseObj2.rel_likes = doc.likes
+                  // compareResponseObj.stockData.push(responseObj2)
+                  // res.send(compareResponseObj)
                 }
               } else if (doc && !req.query.like) {
                 console.log("doc2 found, no like requested")
-                responseObj2.rel_likes = doc.likes
-                compareResponseObj.stockData.push(responseObj2)
-                res.send(compareResponseObj)
+                stock2Likes = doc.likes
+                // responseObj2.rel_likes = doc.likes
+                // compareResponseObj.stockData.push(responseObj2)
+                // res.send(compareResponseObj)
               } else {
                 console.log("Something went wrong! This code shouldn't run.")
               }
               console.log("responseObj2 at end of findOne callback: ", responseObj2)
+              compareResponseObj.stockData.push(responseObj2)
+              console.log("compareResponseObj after pushing responseObj2: ", compareResponseObj)
+              compareResponseObj.stockData[0].rel_likes = stock1Likes - stock2Likes
+              compareResponseObj.stockData[1].rel_likes = stock2Likes - stock1Likes
+              console.log("compareResponseObj after rel_likes calculation: ", compareResponseObj)
+              res.send(compareResponseObj)
             })
-            console.log("responseObj2 at end of proxy data fetch callback: ", responseObj2)
-            console.log("compareResponseObj at end of proxy data fetch callback: ", compareResponseObj)
           })
           .catch(err => {
             res.send(err)
           })
-        console.log("compareResponseObj at end of if-else check for two stocks: ", compareResponseObj)
       } else {
-        res.send({error: "request one or two stocks"})
+        res.send({ error: "request one or two stocks" })
       }
     });
 };
