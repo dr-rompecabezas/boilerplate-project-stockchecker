@@ -35,7 +35,6 @@ module.exports = function (app) {
                   if (err) { console.log(err) }
                   // console.log("new doc with ip and likes created")
                   responseObj.stockData.likes = doc.likes
-                  // res.send(responseObj)
                 })
               } else if (!doc && !req.query.like) {
                 // console.log("no doc found and no like requested")
@@ -43,7 +42,6 @@ module.exports = function (app) {
                   if (err) { console.log(err) }
                   // console.log("new doc with zero likes and empty ip array created")
                   responseObj.stockData.likes = doc.likes
-                  // res.send(responseObj)
                 })
               } else if (doc && req.query.like) {
                 // console.log("doc found; like requested; checking if ip is in doc...")
@@ -55,19 +53,16 @@ module.exports = function (app) {
                     if (err) { console.log(err) }
                     // console.log("doc updated with new ip and new like")
                     responseObj.stockData.likes = doc.likes
-                    // res.send(responseObj)
                   })
                 } else {
                   // console.log("doc already includes ip; responding with existing likes")
                   responseObj.stockData.likes = doc.likes
-                  // res.send(responseObj)
                 }
               } else if (doc && !req.query.like) {
                 // console.log("doc found, no like requested")
                 responseObj.stockData.likes = doc.likes
-                // res.send(responseObj)
               } else {
-                // console.log("Something went wrong! This code shouldn't run.")
+                console.log("Something went wrong! This code shouldn't run.")
               }
               // console.log("responseObj at end of findOne callback: ", responseObj)
               res.send(responseObj)
@@ -99,8 +94,6 @@ module.exports = function (app) {
                   if (err) { console.log(err) }
                   // console.log("new doc1 with ip and likes created")
                   stock1Likes = doc.likes
-                  // responseObj1.rel_likes = doc.likes
-                  // compareResponseObj.stockData.push(responseObj1)
                 })
               } else if (!doc && !req.query.like) {
                 // console.log("no doc1 found and no like requested")
@@ -108,8 +101,6 @@ module.exports = function (app) {
                   if (err) { console.log(err) }
                   // console.log("new doc1 with zero likes and empty ip array created")
                   stock1Likes = doc.likes
-                  // responseObj1.rel_likes = doc.likes
-                  // compareResponseObj.stockData.push(responseObj1)
                 })
               } else if (doc && req.query.like) {
                 // console.log("doc1 found; like requested; checking if ip is in doc...")
@@ -121,20 +112,14 @@ module.exports = function (app) {
                     if (err) { console.log(err) }
                     // console.log("doc1 updated with new ip and new like")
                     stock1Likes = doc.likes
-                    // responseObj1.rel_likes = doc.likes
-                    // compareResponseObj.stockData.push(responseObj1)
                   })
                 } else {
                   // console.log("doc1 already includes ip; responding with existing likes")
                   stock1Likes = doc.likes
-                  // responseObj1.rel_likes = doc.likes
-                  // compareResponseObj.stockData.push(responseObj1)
                 }
               } else if (doc && !req.query.like) {
                 // console.log("doc1 found, no like requested")
                 stock1Likes = doc.likes
-                // responseObj1.rel_likes = doc.likes
-                // compareResponseObj.stockData.push(responseObj1)
               } else {
                 console.log("Something went wrong! This code shouldn't run.")
               }
@@ -163,9 +148,6 @@ module.exports = function (app) {
                   if (err) { console.log(err) }
                   // console.log("new doc2 with ip and likes created")
                   stock2Likes = doc.likes
-                  // responseObj2.rel_likes = doc.likes
-                  // compareResponseObj.stockData.push(responseObj2)
-                  // res.send(compareResponseObj)
                 })
               } else if (!doc && !req.query.like) {
                 // console.log("no doc2 found and no like requested")
@@ -173,9 +155,6 @@ module.exports = function (app) {
                   if (err) { console.log(err) }
                   // console.log("new doc2 with zero likes and empty ip array created")
                   stock2Likes = doc.likes
-                  // responseObj2.rel_likes = doc.likes
-                  // compareResponseObj.stockData.push(responseObj2)
-                  // res.send(compareResponseObj)
                 })
               } else if (doc && req.query.like) {
                 // console.log("doc2 found; like requested; checking if ip is in doc...")
@@ -187,23 +166,14 @@ module.exports = function (app) {
                     if (err) { console.log(err) }
                     // console.log("doc2 updated with new ip and new like")
                     stock2Likes = doc.likes
-                    // responseObj2.rel_likes = doc.likes
-                    // compareResponseObj.stockData.push(responseObj2)
-                    // res.send(compareResponseObj)
                   })
                 } else {
                   // console.log("doc2 already includes ip; responding with existing likes")
                   stock2Likes = doc.likes
-                  // responseObj2.rel_likes = doc.likes
-                  // compareResponseObj.stockData.push(responseObj2)
-                  // res.send(compareResponseObj)
                 }
               } else if (doc && !req.query.like) {
                 // console.log("doc2 found, no like requested")
                 stock2Likes = doc.likes
-                // responseObj2.rel_likes = doc.likes
-                // compareResponseObj.stockData.push(responseObj2)
-                // res.send(compareResponseObj)
               } else {
                 console.log("Something went wrong! This code shouldn't run.")
               }
