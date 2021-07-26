@@ -30,48 +30,49 @@ module.exports = function (app) {
             StockModel.findOne({ stock: data.symbol }, async function (err, doc) {
               if (err) { console.log(err) }
               if (!doc && req.query.like) {
-                console.log("no doc; like requested")
+                // console.log("no doc; like requested")
                 StockModel.create({ stock: data.symbol, ip: ip, likes: 1 }, function (err, doc) {
                   if (err) { console.log(err) }
-                  console.log("new doc with ip and likes created")
-                  compareResponseObj.stockData.likes = doc.likes
-                  res.send(responseObj)
+                  // console.log("new doc with ip and likes created")
+                  responseObj.stockData.likes = doc.likes
+                  // res.send(responseObj)
                 })
               } else if (!doc && !req.query.like) {
-                console.log("no doc found and no like requested")
+                // console.log("no doc found and no like requested")
                 StockModel.create({ stock: data.symbol, likes: 0 }, function (err, doc) {
                   if (err) { console.log(err) }
-                  console.log("new doc with zero likes and empty ip array created")
-                  compareResponseObj.stockData.likes = doc.likes
-                  res.send(responseObj)
+                  // console.log("new doc with zero likes and empty ip array created")
+                  responseObj.stockData.likes = doc.likes
+                  // res.send(responseObj)
                 })
               } else if (doc && req.query.like) {
-                console.log("doc found; like requested; checking if ip is in doc...")
+                // console.log("doc found; like requested; checking if ip is in doc...")
                 if (!doc.ip.includes(ip)) {
-                  console.log("doc does not include requesting ip; updating doc with new ip and valid like...")
+                  // console.log("doc does not include requesting ip; updating doc with new ip and valid like...")
                   doc.ip.push(ip)
                   doc.likes++
                   await doc.save(function (err, doc) {
                     if (err) { console.log(err) }
-                    console.log("doc updated with new ip and new like")
+                    // console.log("doc updated with new ip and new like")
                     responseObj.stockData.likes = doc.likes
-                    res.send(responseObj)
+                    // res.send(responseObj)
                   })
                 } else {
-                  console.log("doc already includes ip; responding with existing likes")
+                  // console.log("doc already includes ip; responding with existing likes")
                   responseObj.stockData.likes = doc.likes
-                  res.send(responseObj)
+                  // res.send(responseObj)
                 }
               } else if (doc && !req.query.like) {
-                console.log("doc found, no like requested")
+                // console.log("doc found, no like requested")
                 responseObj.stockData.likes = doc.likes
-                res.send(responseObj)
+                // res.send(responseObj)
               } else {
-                console.log("Something went wrong! This code shouldn't run.")
+                // console.log("Something went wrong! This code shouldn't run.")
               }
-              console.log("responseObj at end of findOne callback: ", responseObj)
+              // console.log("responseObj at end of findOne callback: ", responseObj)
+              res.send(responseObj)
             })
-            console.log("responseObj at end of proxy data fetch callback: ", responseObj)
+            // console.log("responseObj at end of proxy data fetch callback: ", responseObj)
           })
           .catch(err => {
             res.send(err)
@@ -93,53 +94,53 @@ module.exports = function (app) {
             StockModel.findOne({ stock: data.symbol }, async function (err, doc) {
               if (err) { console.log(err) }
               if (!doc && req.query.like) {
-                console.log("no doc1; like requested")
+                // console.log("no doc1; like requested")
                 StockModel.create({ stock: data.symbol, ip: ip, likes: 1 }, function (err, doc) {
                   if (err) { console.log(err) }
-                  console.log("new doc1 with ip and likes created")
+                  // console.log("new doc1 with ip and likes created")
                   stock1Likes = doc.likes
                   // responseObj1.rel_likes = doc.likes
                   // compareResponseObj.stockData.push(responseObj1)
                 })
               } else if (!doc && !req.query.like) {
-                console.log("no doc1 found and no like requested")
+                // console.log("no doc1 found and no like requested")
                 StockModel.create({ stock: data.symbol, likes: 0 }, function (err, doc) {
                   if (err) { console.log(err) }
-                  console.log("new doc1 with zero likes and empty ip array created")
+                  // console.log("new doc1 with zero likes and empty ip array created")
                   stock1Likes = doc.likes
                   // responseObj1.rel_likes = doc.likes
                   // compareResponseObj.stockData.push(responseObj1)
                 })
               } else if (doc && req.query.like) {
-                console.log("doc1 found; like requested; checking if ip is in doc...")
+                // console.log("doc1 found; like requested; checking if ip is in doc...")
                 if (!doc.ip.includes(ip)) {
-                  console.log("doc1 does not include requesting ip; updating doc with new ip and valid like...")
+                  // console.log("doc1 does not include requesting ip; updating doc with new ip and valid like...")
                   doc.ip.push(ip)
                   doc.likes++
                   await doc.save(function (err, doc) {
                     if (err) { console.log(err) }
-                    console.log("doc1 updated with new ip and new like")
+                    // console.log("doc1 updated with new ip and new like")
                     stock1Likes = doc.likes
                     // responseObj1.rel_likes = doc.likes
                     // compareResponseObj.stockData.push(responseObj1)
                   })
                 } else {
-                  console.log("doc1 already includes ip; responding with existing likes")
+                  // console.log("doc1 already includes ip; responding with existing likes")
                   stock1Likes = doc.likes
                   // responseObj1.rel_likes = doc.likes
                   // compareResponseObj.stockData.push(responseObj1)
                 }
               } else if (doc && !req.query.like) {
-                console.log("doc1 found, no like requested")
+                // console.log("doc1 found, no like requested")
                 stock1Likes = doc.likes
                 // responseObj1.rel_likes = doc.likes
                 // compareResponseObj.stockData.push(responseObj1)
               } else {
                 console.log("Something went wrong! This code shouldn't run.")
               }
-              console.log("responseObj1 at end of findOne callback: ", responseObj1)
+              // console.log("responseObj1 at end of findOne callback: ", responseObj1)
               compareResponseObj.stockData.push(responseObj1)
-              console.log("compareResponseObj after pushing responseObj1: ", compareResponseObj)
+              // console.log("compareResponseObj after pushing responseObj1: ", compareResponseObj)
             })
           })
           .catch(err => {
@@ -157,48 +158,48 @@ module.exports = function (app) {
             StockModel.findOne({ stock: data.symbol }, async function (err, doc) {
               if (err) { console.log(err) }
               if (!doc && req.query.like) {
-                console.log("no doc2; like requested")
+                // console.log("no doc2; like requested")
                 StockModel.create({ stock: data.symbol, ip: ip, likes: 1 }, function (err, doc) {
                   if (err) { console.log(err) }
-                  console.log("new doc2 with ip and likes created")
+                  // console.log("new doc2 with ip and likes created")
                   stock2Likes = doc.likes
                   // responseObj2.rel_likes = doc.likes
                   // compareResponseObj.stockData.push(responseObj2)
                   // res.send(compareResponseObj)
                 })
               } else if (!doc && !req.query.like) {
-                console.log("no doc2 found and no like requested")
+                // console.log("no doc2 found and no like requested")
                 StockModel.create({ stock: data.symbol, likes: 0 }, function (err, doc) {
                   if (err) { console.log(err) }
-                  console.log("new doc2 with zero likes and empty ip array created")
+                  // console.log("new doc2 with zero likes and empty ip array created")
                   stock2Likes = doc.likes
                   // responseObj2.rel_likes = doc.likes
                   // compareResponseObj.stockData.push(responseObj2)
                   // res.send(compareResponseObj)
                 })
               } else if (doc && req.query.like) {
-                console.log("doc2 found; like requested; checking if ip is in doc...")
+                // console.log("doc2 found; like requested; checking if ip is in doc...")
                 if (!doc.ip.includes(ip)) {
-                  console.log("doc2 does not include requesting ip; updating doc with new ip and valid like...")
+                  // console.log("doc2 does not include requesting ip; updating doc with new ip and valid like...")
                   doc.ip.push(ip)
                   doc.likes++
                   await doc.save(function (err, doc) {
                     if (err) { console.log(err) }
-                    console.log("doc2 updated with new ip and new like")
+                    // console.log("doc2 updated with new ip and new like")
                     stock2Likes = doc.likes
                     // responseObj2.rel_likes = doc.likes
                     // compareResponseObj.stockData.push(responseObj2)
                     // res.send(compareResponseObj)
                   })
                 } else {
-                  console.log("doc2 already includes ip; responding with existing likes")
+                  // console.log("doc2 already includes ip; responding with existing likes")
                   stock2Likes = doc.likes
                   // responseObj2.rel_likes = doc.likes
                   // compareResponseObj.stockData.push(responseObj2)
                   // res.send(compareResponseObj)
                 }
               } else if (doc && !req.query.like) {
-                console.log("doc2 found, no like requested")
+                // console.log("doc2 found, no like requested")
                 stock2Likes = doc.likes
                 // responseObj2.rel_likes = doc.likes
                 // compareResponseObj.stockData.push(responseObj2)
@@ -206,12 +207,12 @@ module.exports = function (app) {
               } else {
                 console.log("Something went wrong! This code shouldn't run.")
               }
-              console.log("responseObj2 at end of findOne callback: ", responseObj2)
+              // console.log("responseObj2 at end of findOne callback: ", responseObj2)
               compareResponseObj.stockData.push(responseObj2)
-              console.log("compareResponseObj after pushing responseObj2: ", compareResponseObj)
+              // console.log("compareResponseObj after pushing responseObj2: ", compareResponseObj)
               compareResponseObj.stockData[0].rel_likes = stock1Likes - stock2Likes
               compareResponseObj.stockData[1].rel_likes = stock2Likes - stock1Likes
-              console.log("compareResponseObj after rel_likes calculation: ", compareResponseObj)
+              // console.log("compareResponseObj after rel_likes calculation: ", compareResponseObj)
               res.send(compareResponseObj)
             })
           })
